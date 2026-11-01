@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/PharmaRnd.API/PharmaRnd.API.csproj" Id="0003f7cc-70fe-411e-abdd-2c0c001409e1" />
+  <Project Path="src/PharmaRnd.Application/PharmaRnd.Application.csproj" Id="31658b0d-c004-4beb-9999-39bb60f61ebc" />
+  <Project Path="src/PharmaRnd.Domain/PharmaRnd.Domain.csproj" Id="6deed08d-1a55-4602-8e03-d17241771cf1" />
+  <Project Path="src/PharmaRnd.Infrastructure/PharmaRnd.Infrastructure.csproj" Id="bc74198a-da48-4946-b7f3-5dea052f9076" />
+</Solution>

@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PharmaRnd.Application\PharmaRnd.Application.csproj" />
+    <ProjectReference Include="..\PharmaRnd.Domain\PharmaRnd.Domain.csproj" />
+    <ProjectReference Include="..\PharmaRnd.Infrastructure\PharmaRnd.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
