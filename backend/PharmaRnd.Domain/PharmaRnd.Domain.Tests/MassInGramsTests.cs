@@ -1,9 +1,9 @@
 ﻿namespace PharmaRnd.Domain.Tests
 {
-    public class UnitTest1
+    public class MassInGramsTests
     {
         [Fact]
-        public void Test1()
+        public void Create_Mass()
         {
             var result = MassInGrams.Create(100);
             
