@@ -2,7 +2,7 @@
 
 namespace PharmaRnd.Domain
 {
-    public class MassInGrams : ValueObject
+    public record MassInGrams
     {
         //Приватный конструктор, присваивает значение
         private MassInGrams(float value)
@@ -11,7 +11,7 @@ namespace PharmaRnd.Domain
         }
 
         //Свойство, отражающее значение массы в граммах
-        //можем получить извне
+        //можем получить извне, но не дать новое значение
         public float Value { get; }
 
         //Метод для создания объекта MassInGrams через приватный конструктор
@@ -27,16 +27,8 @@ namespace PharmaRnd.Domain
             {
                 return Result.Failure<MassInGrams>("Масса должна быть больше нуля");
             }
-
-            var massInGrams = new MassInGrams(value);
-            return massInGrams;
-        }
-
-        //Метод для сравнения двух объектов. Равенство двух объектов
-        //определяется значением массы
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Value;
+            
+            return new MassInGrams(value);
         }
     }
 }
