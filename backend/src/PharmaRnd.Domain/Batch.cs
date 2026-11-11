@@ -13,52 +13,23 @@ namespace PharmaRnd.Domain
         {
         }
 
-        private Batch
+        public Batch
             (
             BatchId id,
-            ProductId prodId,
             BatchNumber number,
             DateOnly manufacturedOn
             ) : base(id)
         {
-            ProdId = prodId;
             Number = number;
             ManufacturedOn = manufacturedOn;
         }
 
-        public ProductId ProdId { get; } = default!;
+        public BatchNumber Number { get; private set; } = default!;
 
-        public BatchNumber Number { get; } = default!;
-
-        public DateOnly ManufacturedOn { get; } = default!;
+        public DateOnly ManufacturedOn { get; private set; } = default!;
         
         public IReadOnlyList<BatchComponent> Components => _components
             .AsReadOnly();
-
-        public static Result<Batch> Create(
-            BatchId id,
-            ProductId prodId, 
-            BatchNumber number, 
-            DateOnly manufacturedOn
-            )
-        {
-            if(id == null)
-            {
-                return Result.Failure<Batch>("Не указан идентификатор серии");
-            }
-
-            if (prodId == null)
-            {
-                return Result.Failure<Batch>("Не указан идентификатор препарата");
-            }
-
-            if (number == null || !number.MatchesManufacturedOn(manufacturedOn))
-            {
-                return Result.Failure<Batch>("Задайте корректный номер серии");
-            }
-
-            return new Batch(id, prodId, number, manufacturedOn);
-        }
 
         public Result AddComponent(BatchComponent? batchComponent)
         {
@@ -68,19 +39,6 @@ namespace PharmaRnd.Domain
             }
 
             _components.Add(batchComponent);
-
-            return Result.Success();
-        }
-
-        public Result RemoveComponent(BatchComponentId id)
-        {
-            var componentForDelete = Components.FirstOrDefault(x => x.Id == id);
-            if(componentForDelete == null)
-            {
-                return Result.Failure("Такого компонента не существует");
-            }
-
-            _components.Remove(componentForDelete);
 
             return Result.Success();
         }

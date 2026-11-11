@@ -1,15 +1,21 @@
+using PharmaRnd.API.Validation;
+using PharmaRnd.Application;
 using PharmaRnd.Infrastructure;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services
-    .AddInfrastructure();
+    .AddInfrastructure()
+    .AddApplication();
+
+builder.Services.AddFluentValidationAutoValidation(configuration =>
+{
+    configuration.OverrideDefaultResultFactoryWith<CustomResultFactory>();
+});
 
 var app = builder.Build();
 

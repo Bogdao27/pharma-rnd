@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PharmaRnd.Domain
+﻿namespace PharmaRnd.Domain
 {
     public record ProductId
     {
@@ -14,5 +10,17 @@ namespace PharmaRnd.Domain
         public Guid Value { get; }
 
         public static ProductId NewProductId() => new(Guid.NewGuid());
+
+        public static ProductId Create(Guid id) => new(id);
+
+        public static implicit operator Guid(ProductId productId)
+        {
+            if(productId is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            return productId.Value;
+        }
     }
 }

@@ -33,6 +33,10 @@ namespace PharmaRnd.Infrastructure.Migrations
                         .HasColumnType("date")
                         .HasColumnName("manufactured_on");
 
+                    b.Property<Guid>("product_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
                     b.ComplexProperty(typeof(Dictionary<string, object>), "Number", "PharmaRnd.Domain.Batch.Number#BatchNumber", b1 =>
                         {
                             b1.IsRequired();
@@ -44,19 +48,13 @@ namespace PharmaRnd.Infrastructure.Migrations
                                 .HasColumnName("batch_number");
                         });
 
-                    b.ComplexProperty(typeof(Dictionary<string, object>), "ProdId", "PharmaRnd.Domain.Batch.ProdId#ProductId", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<Guid>("Value")
-                                .HasColumnType("uuid")
-                                .HasColumnName("product_id");
-                        });
-
                     b.HasKey("Id")
-                        .HasName("pk_batch");
+                        .HasName("pk_batches");
 
-                    b.ToTable("batch", (string)null);
+                    b.HasIndex("product_id")
+                        .HasDatabaseName("ix_batches_product_id");
+
+                    b.ToTable("batches", (string)null);
                 });
 
             modelBuilder.Entity("PharmaRnd.Domain.BatchComponent", b =>
@@ -65,7 +63,7 @@ namespace PharmaRnd.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("BatchId")
+                    b.Property<Guid>("batch_id")
                         .HasColumnType("uuid")
                         .HasColumnName("batch_id");
 
@@ -84,31 +82,91 @@ namespace PharmaRnd.Infrastructure.Migrations
 
                             b1.Property<float>("Value")
                                 .HasColumnType("real")
-                                .HasColumnName("mass_in_grams");
+                                .HasColumnName("mass");
                         });
 
                     b.HasKey("Id")
-                        .HasName("pk_batch_components");
+                        .HasName("pk_batch_component");
 
-                    b.HasIndex("BatchId")
-                        .HasDatabaseName("ix_batch_components_batch_id");
+                    b.HasIndex("batch_id")
+                        .HasDatabaseName("ix_batch_component_batch_id");
 
-                    b.ToTable("batch_components", (string)null);
+                    b.ToTable("batch_component", (string)null);
+                });
+
+            modelBuilder.Entity("PharmaRnd.Domain.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "Description", "PharmaRnd.Domain.Product.Description#Description", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(300)
+                                .HasColumnType("character varying(300)")
+                                .HasColumnName("description");
+                        });
+
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "DosageForm", "PharmaRnd.Domain.Product.DosageForm#DosageForm", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(30)
+                                .HasColumnType("character varying(30)")
+                                .HasColumnName("dosage_form");
+                        });
+
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "ProductName", "PharmaRnd.Domain.Product.ProductName#ProductName", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("product_name");
+                        });
+
+                    b.HasKey("Id")
+                        .HasName("pk_products");
+
+                    b.ToTable("products", (string)null);
+                });
+
+            modelBuilder.Entity("PharmaRnd.Domain.Batch", b =>
+                {
+                    b.HasOne("PharmaRnd.Domain.Product", null)
+                        .WithMany("Batches")
+                        .HasForeignKey("product_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_batches_products_product_id");
                 });
 
             modelBuilder.Entity("PharmaRnd.Domain.BatchComponent", b =>
                 {
                     b.HasOne("PharmaRnd.Domain.Batch", null)
                         .WithMany("Components")
-                        .HasForeignKey("BatchId")
+                        .HasForeignKey("batch_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_batch_components_batch_batch_id");
+                        .HasConstraintName("fk_batch_component_batches_batch_id");
                 });
 
             modelBuilder.Entity("PharmaRnd.Domain.Batch", b =>
                 {
                     b.Navigation("Components");
+                });
+
+            modelBuilder.Entity("PharmaRnd.Domain.Product", b =>
+                {
+                    b.Navigation("Batches");
                 });
 #pragma warning restore 612, 618
         }
