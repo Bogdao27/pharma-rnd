@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using PharmaRnd.Application.Products;
+using PharmaRnd.Infrastructure.Repositories;
 
 namespace PharmaRnd.Infrastructure
 {
@@ -10,6 +9,8 @@ namespace PharmaRnd.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddScoped<ApplicationDbContext>();
+
+            services.AddScoped<IProductsRepository, ProductsRepository>();
 
             return services;
         }

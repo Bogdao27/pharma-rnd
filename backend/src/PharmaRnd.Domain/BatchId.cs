@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PharmaRnd.Domain
+﻿namespace PharmaRnd.Domain
 {
     //идентификатор самой серии в системе
     public record BatchId
@@ -18,5 +14,15 @@ namespace PharmaRnd.Domain
 
         //для конфига бд
         public static BatchId Create(Guid id) => new(id);
+
+        public static implicit operator Guid(BatchId batchId)
+        {
+            if (batchId is null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            return batchId.Value;
+        }
     }
 }

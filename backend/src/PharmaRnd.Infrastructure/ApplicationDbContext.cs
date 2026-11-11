@@ -9,7 +9,7 @@ namespace PharmaRnd.Infrastructure
     {
         private const string DATABASE = "Database";
 
-        public DbSet<Batch> Batches => Set<Batch>();
+        public DbSet<Product> Products => Set<Product>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

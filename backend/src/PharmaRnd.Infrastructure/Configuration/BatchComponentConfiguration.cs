@@ -8,26 +8,25 @@ namespace PharmaRnd.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<BatchComponent> builder)
         {
-            builder.ToTable("batch_components");
+            builder.ToTable("batch_component");
 
             builder.HasKey(bc => bc.Id);
 
             builder.Property(bc => bc.Id)
                 .HasConversion(
                      id => id.Value,
-                     value => BatchComponentId.Create(value)
-                );
+                     value => BatchComponentId.Create(value));
 
-            builder.ComplexProperty(bc => bc.Mass, mb =>
+            builder.ComplexProperty(bc => bc.Mass, bcb =>
             {
-                mb.Property(m => m.Value)
+                bcb.Property(m => m.Value)
                      .IsRequired()
-                     .HasColumnName("mass_in_grams");
+                     .HasColumnName("mass");
             });
 
-            builder.ComplexProperty(bc => bc.LotId, lb =>
+            builder.ComplexProperty(bc => bc.LotId, bcb =>
             {
-                lb.Property(l => l.Value)
+                bcb.Property(l => l.Value)
                      .IsRequired()
                      .HasColumnName("lot_id");
             });

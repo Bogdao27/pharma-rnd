@@ -4,3 +4,13 @@ GET {{PharmaRnd.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{PharmaRnd.API_HostAddress}}/products
+Content-Type: application/json
+Accept: application/json
+
+{
+  "productName": "Харош",
+  "description": "Молодчик",
+  "dosageForm": "Таблетос"
+}

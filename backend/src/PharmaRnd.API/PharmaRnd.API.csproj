@@ -8,17 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.14">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="SharpGrip.FluentValidation.AutoValidation.Mvc" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PharmaRnd.Application\PharmaRnd.Application.csproj" />
-    <ProjectReference Include="..\..\PharmaRnd.Domain\PharmaRnd.Domain.csproj" />
-    <ProjectReference Include="..\..\PharmaRnd.Infrastructure\PharmaRnd.Infrastructure.csproj" />
+    <ProjectReference Include="..\PharmaRnd.Application\PharmaRnd.Application.csproj" />
+    <ProjectReference Include="..\PharmaRnd.Domain\PharmaRnd.Domain.csproj" />
+    <ProjectReference Include="..\PharmaRnd.Infrastructure\PharmaRnd.Infrastructure.csproj" />
     <ProjectReference Include="..\PharmaRnd.Application\PharmaRnd.Application.csproj" />
     <ProjectReference Include="..\PharmaRnd.Domain\PharmaRnd.Domain.csproj" />
     <ProjectReference Include="..\PharmaRnd.Infrastructure\PharmaRnd.Infrastructure.csproj" />
