@@ -41,12 +41,12 @@ namespace PharmaRnd.API.Extensions
             var validationErrors = result.Errors;
 
             var responseErrors = from validationError in validationErrors
-                           let errorMessage = validationError.ErrorMessage
-                           let error = Error.Deserialize(errorMessage)
-                           select new ResponseError(
-                               error.Code,
-                               error.Message,
-                               validationError.PropertyName);
+                                 let errorMessage = validationError.ErrorMessage
+                                 let error = Error.Deserialize(errorMessage)
+                                 select new ResponseError(
+                                     error.Code,
+                                     error.Message,
+                                     validationError.PropertyName);
 
             var envelope = Envelope.Error(responseErrors);
 

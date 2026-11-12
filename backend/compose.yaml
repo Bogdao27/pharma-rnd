@@ -1,0 +1,18 @@
+name: pharma-rnd
+
+services:
+  seq:
+    image: datalust/seq:latest
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SEQ_FIRSTRUN_ADMINPASSWORD
+    ports:
+      - "127.0.0.1:8082:80"
+      - "127.0.0.1:5342:5341"
+    volumes:
+      - seq-data:/data
+
+volumes:
+  seq-data:
+  
