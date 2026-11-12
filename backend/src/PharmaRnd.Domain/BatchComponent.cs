@@ -23,16 +23,16 @@ namespace PharmaRnd.Domain
         //свойство айдишник в виде VO
         public RawMaterialLotId LotId { get; private set; } = default!;
 
-        public static Result<BatchComponent> Create(BatchComponentId id, MassInGrams mass, RawMaterialLotId lotId)
+        public static Result<BatchComponent, Error> Create(BatchComponentId id, MassInGrams mass, RawMaterialLotId lotId)
         {
             if (mass == null)
             {
-                return Result.Failure<BatchComponent>("Укажите массу");
+                return Errors.General.ValueIsInvalid("BatchComponent");
             }
 
             if(lotId == null)
             {
-                return Result.Failure<BatchComponent>("Укажите партию сырья");
+                return Errors.General.ValueIsInvalid("BatchComponent");
             }
 
             return new BatchComponent(id, mass, lotId);

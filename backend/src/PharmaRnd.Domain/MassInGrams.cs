@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PharmaRnd.Domain.Shared;
 
 namespace PharmaRnd.Domain
 {
@@ -16,16 +17,16 @@ namespace PharmaRnd.Domain
 
         //Метод для создания объекта MassInGrams через приватный конструктор
         //и проверки значения на ноль
-        public static Result<MassInGrams> Create(float value)
+        public static Result<MassInGrams, Error> Create(float value)
         {
             if (!float.IsFinite(value))
             {
-                return Result.Failure<MassInGrams>("Масса должна быть конечным числом");
+                return Errors.General.ValueIsInvalid("MassInGrams");
             }
             
             if (value <= 0)
             {
-                return Result.Failure<MassInGrams>("Масса должна быть больше нуля");
+                return Errors.General.ValueIsInvalid("MassInGrams");
             }
             
             return new MassInGrams(value);
