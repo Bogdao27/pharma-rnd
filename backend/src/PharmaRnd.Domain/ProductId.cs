@@ -13,6 +13,8 @@
 
         public static ProductId Create(Guid id) => new(id);
 
+        public static implicit operator ProductId(Guid id) => new(id);
+
         public static implicit operator Guid(ProductId productId)
         {
             if(productId is null)

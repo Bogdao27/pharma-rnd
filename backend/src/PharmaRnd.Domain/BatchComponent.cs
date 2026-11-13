@@ -5,6 +5,8 @@ namespace PharmaRnd.Domain
 {
     public class BatchComponent : MyEntity<BatchComponentId>
     {
+        private bool _isDeleted = false;
+
         //для Ef Core
         private BatchComponent(BatchComponentId id) : base(id)
         {  
@@ -48,6 +50,22 @@ namespace PharmaRnd.Domain
             Mass = newMass;
 
             return Result.Success();
+        }
+
+        public void Delete()
+        {
+            if (_isDeleted == false)
+            {
+                _isDeleted = true;
+            }
+        }
+
+        public void Restore()
+        {
+            if (_isDeleted)
+            {
+                _isDeleted = false;
+            }
         }
     }
 }

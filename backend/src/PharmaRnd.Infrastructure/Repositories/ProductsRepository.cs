@@ -24,12 +24,14 @@ namespace PharmaRnd.Infrastructure.Repositories
             return product.Id;
         }
 
-        public async Task<Result<Product, Error>> GetById(ProductId productId)
+        public async Task<Result<Product, Error>> GetById(
+            ProductId productId, 
+            CancellationToken cancellationToken = default)
         {
             var product = await _dbContext.Products
                 .Include(p => p.Batches)
                 .ThenInclude(b => b.Components)
-                .FirstOrDefaultAsync(p => p.Id == productId);
+                .FirstOrDefaultAsync(p => p.Id == productId, cancellationToken);
 
             if (product is null)
             {
@@ -39,12 +41,14 @@ namespace PharmaRnd.Infrastructure.Repositories
             return product;
         }
 
-        public async Task<Result<Product, Error>> GetByProductName(ProductName productName)
+        public async Task<Result<Product, Error>> GetByProductName(
+            ProductName productName, 
+            CancellationToken cancellationToken = default)
         {
             var product = await _dbContext.Products
                 .Include(p => p.Batches)
                 .ThenInclude(b => b.Components)
-                .FirstOrDefaultAsync(p => p.ProductName == productName);
+                .FirstOrDefaultAsync(p => p.ProductName == productName, cancellationToken);
 
             if (product is null)
             {
@@ -52,6 +56,28 @@ namespace PharmaRnd.Infrastructure.Repositories
             }
 
             return product;
+        }
+
+        public async Task<Guid> Save(
+            Product product, 
+            CancellationToken cancellationToken)
+        {
+            _dbContext.Products.Attach(product);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return product.Id;
+        }
+
+        public async Task<Guid> Delete(
+            Product product,
+            CancellationToken cancellationToken)
+        {
+            _dbContext.Remove(product);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return product.Id;
         }
     }
 }

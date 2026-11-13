@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PharmaRnd.Infrastructure.Interceptors;
 
 namespace PharmaRnd.Infrastructure
 {
@@ -17,7 +18,11 @@ namespace PharmaRnd.Infrastructure
 
             optionsBuilder.UseSnakeCaseNamingConvention();
 
+            optionsBuilder.EnableSensitiveDataLogging();
+            
             optionsBuilder.UseLoggerFactory(CreateLoggerFactory());
+
+            optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

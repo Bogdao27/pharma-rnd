@@ -4,8 +4,10 @@ using PharmaRnd.Domain.Shared;
 namespace PharmaRnd.Domain
 {
     //корень агрегата
-    public class Batch : MyEntity<BatchId>
+    public class Batch : MyEntity<BatchId>, ISoftDeletable
     {
+        private bool _isDeleted = false;
+
         private readonly List<BatchComponent> _components = [];
 
         //для ef core
@@ -52,6 +54,22 @@ namespace PharmaRnd.Domain
             }
 
             return batchComponent.ChangeMass(newMass);
+        }
+
+        public void Delete()
+        {
+            if (_isDeleted == false)
+            {
+                _isDeleted = true;
+            }
+        }
+
+        public void Restore()
+        {
+            if (_isDeleted)
+            {
+                _isDeleted = false;
+            }
         }
     }
 }

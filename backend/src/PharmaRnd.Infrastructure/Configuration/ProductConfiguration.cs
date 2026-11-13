@@ -46,6 +46,10 @@ namespace PharmaRnd.Infrastructure.Configuration
                 .HasForeignKey("product_id")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Property<bool>("_isDeleted")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("is_deleted");
         }
     }
 }
