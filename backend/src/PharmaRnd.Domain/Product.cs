@@ -3,8 +3,10 @@ using PharmaRnd.Domain.Shared;
 
 namespace PharmaRnd.Domain
 {
-    public class Product : MyEntity<ProductId>
+    public class Product : MyEntity<ProductId>, ISoftDeletable
     {
+        private bool _isDeleted = false;
+        
         private readonly List<Batch> _batches = [];
         
         private Product(ProductId id) : base(id)
@@ -29,6 +31,32 @@ namespace PharmaRnd.Domain
         public IReadOnlyList<Batch> Batches => _batches;
         
         public int GetNumberOfBatches() => _batches.Count();
+
+        public void UpdateMainInfo(
+            ProductName productName, 
+            Description description, 
+            DosageForm dosageForm)
+        {
+            ProductName = productName;
+            Description = description;
+            DosageForm = dosageForm;
+        }
+
+        public void Delete()
+        {
+            if (_isDeleted == false)
+            {
+                _isDeleted = true;
+            }
+        }
+
+        public void Restore()
+        {
+            if (_isDeleted)
+            {
+                _isDeleted = false;
+            }
+        }
 
         public UnitResult<Error> AddBatch(Batch batch)
         {

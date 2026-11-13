@@ -1,3 +1,4 @@
+using Microsoft.OpenApi;
 using PharmaRnd.API.Extensions;
 using PharmaRnd.API.Middlewares;
 using PharmaRnd.API.Validation;
@@ -25,7 +26,7 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 builder.Services.AddSerilog();
 builder.Services
     .AddInfrastructure()
@@ -41,8 +42,17 @@ app.UseExceptionMiddleware();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger(options =>
+    {
+        options.RouteTemplate = "openapi/{documentName}.json";
+        options.OpenApiVersion = OpenApiSpecVersion.OpenApi3_1;
+    });
 
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("../openapi/v1.json", "PharmaRnd API v1");
+    });
+    
     await app.ApplyMigrations();    
 }
 

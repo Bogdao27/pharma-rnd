@@ -33,6 +33,10 @@ namespace PharmaRnd.Infrastructure.Migrations
                         .HasColumnType("date")
                         .HasColumnName("manufactured_on");
 
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
                     b.Property<Guid>("product_id")
                         .HasColumnType("uuid")
                         .HasColumnName("product_id");
@@ -62,6 +66,10 @@ namespace PharmaRnd.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.Property<Guid>("batch_id")
                         .HasColumnType("uuid")
@@ -99,6 +107,10 @@ namespace PharmaRnd.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
                         .HasColumnName("id");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
 
                     b.ComplexProperty(typeof(Dictionary<string, object>), "Description", "PharmaRnd.Domain.Product.Description#Description", b1 =>
                         {

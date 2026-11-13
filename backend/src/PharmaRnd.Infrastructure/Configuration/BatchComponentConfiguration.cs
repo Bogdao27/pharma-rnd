@@ -30,6 +30,10 @@ namespace PharmaRnd.Infrastructure.Configuration
                      .IsRequired()
                      .HasColumnName("lot_id");
             });
+
+            builder.Property<bool>("_isDeleted")
+                .UsePropertyAccessMode(PropertyAccessMode.Field)
+                .HasColumnName("is_deleted");
         }
     }
 }

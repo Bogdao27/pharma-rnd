@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PharmaRnd.Application.Products;
+using PharmaRnd.Infrastructure.Interceptors;
 using PharmaRnd.Infrastructure.Repositories;
 
 namespace PharmaRnd.Infrastructure
@@ -9,6 +10,8 @@ namespace PharmaRnd.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddScoped<ApplicationDbContext>();
+
+            services.AddSingleton<SoftDeleteInterceptor>();
 
             services.AddScoped<IProductsRepository, ProductsRepository>();
 
