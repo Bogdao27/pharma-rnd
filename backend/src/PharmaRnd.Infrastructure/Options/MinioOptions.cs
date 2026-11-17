@@ -1,0 +1,11 @@
+namespace PharmaRnd.Infrastructure.Options;
+
+public class MyMinioOptions
+{
+    public const string MINIO = "Minio";
+    
+    public string Endpoint { get; init; } = string.Empty;
+    public string Accesskey { get; init; } = string.Empty;
+    public string SecretKey { get; init; } = string.Empty;
+    public bool WithSSL { get; init; } = false;
+}
