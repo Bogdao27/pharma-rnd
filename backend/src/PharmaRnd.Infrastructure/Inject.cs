@@ -5,6 +5,8 @@ using PharmaRnd.Application.Products;
 using PharmaRnd.Infrastructure.Interceptors;
 using PharmaRnd.Infrastructure.Repositories;
 using PharmaRnd.Infrastructure.Options;
+using PharmaRnd.Application.Providers;
+using PharmaRnd.Infrastructure.Providers;
 
 namespace PharmaRnd.Infrastructure
 {
@@ -21,27 +23,22 @@ namespace PharmaRnd.Infrastructure
 
             services.AddMinio(configuration);
 
+            services.AddScoped<IFilesProvider, MinioProvider>();
+
             return services;
         }
 
         private static IServiceCollection AddMinio(
             this IServiceCollection services, IConfiguration configuration)
         {
-            services.Configure<MyMinioOptions>(configuration.GetSection(MyMinioOptions.MINIO));
+            var minioOptions = configuration.GetSection(MyMinioOptions.MINIO).Get<MyMinioOptions>()
+                               ?? throw new ApplicationException("Missing minio configuration");
 
             services.AddMinio(options =>
             {
-                services.Configure<MyMinioOptions>(configuration.GetSection(MyMinioOptions.MINIO));
-
-                services.AddMinio(options =>
-                {
-                    var minioOptions = configuration.GetSection(MyMinioOptions.MINIO).Get<MyMinioOptions>()
-                                       ?? throw new ApplicationException("Missing minio configuration");
-
-                    options.WithEndpoint(minioOptions.Endpoint);
-                    options.WithCredentials("minioadmin", "minioadmin");
-                    options.WithSSL(minioOptions.WithSSL);
-                });
+                options.WithEndpoint(minioOptions.Endpoint);
+                options.WithCredentials(minioOptions.AccessKey, minioOptions.SecretKey);
+                options.WithSSL(minioOptions.WithSSL);
             });
 
             return services;
