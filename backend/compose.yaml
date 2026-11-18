@@ -12,15 +12,15 @@ services:
       - "127.0.0.1:5342:5341"
     volumes:
       - seq-data:/data
-minio: 
-    container name: minio
-    image: minio/minio
+  minio: 
+    container_name: minio
+    image: pharma-rnd-minio:local
     ports:
       - 9000:9000
       - 9001:9001
     volumes:
-      - minio_data:/data
-    command: server --console-adress ":9001" /data
+      - minio-data:/data
+    command: server --console-address ":9001" /data
     restart: always
 
 volumes:
