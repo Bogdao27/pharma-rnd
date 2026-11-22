@@ -7,18 +7,18 @@ using PharmaRnd.Domain.Shared;
 
 namespace PharmaRnd.Application.Products.AddBatch;
 
-public class AddBatchHandler
-{
-    private readonly IFileProvider _fileProvider;
+//public class AddBatchHandler
+//{
+//    private readonly IFileProvider _fileProvider;
 
-    public AddBatchHandler(IFileProvider fileProvider)
-    {
-        _fileProvider = fileProvider;
-    }
+//    public AddBatchHandler(IFileProvider fileProvider)
+//    {
+//        _fileProvider = fileProvider;
+//    }
 
-    public async Task<Result<Guid, Error>> HandlerAsync(
-        CancellationToken cancellationToken = default)
-        {
-            _fileProvider.UploadFile(FileData fileData, cancellationToken);
-        }
-}
+//    public async Task<Result<Guid, Error>> HandlerAsync(
+//        CancellationToken cancellationToken = default)
+//        {
+//            _fileProvider.UploadFile(FileData fileData, cancellationToken);
+//        }
+//}

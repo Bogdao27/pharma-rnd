@@ -9,6 +9,7 @@ namespace PharmaRnd.Domain
         private bool _isDeleted = false;
 
         private readonly List<BatchComponent> _components = [];
+        private readonly List<ProductionStage> _stages = [];
 
         //для ef core
         private Batch(BatchId id) : base(id)
@@ -30,19 +31,42 @@ namespace PharmaRnd.Domain
 
         public DateOnly ManufacturedOn { get; private set; } = default!;
         
-        public IReadOnlyList<BatchComponent> Components => _components
-            .AsReadOnly();
+        public IReadOnlyList<BatchComponent> Components => _components.AsReadOnly();
 
-        public Result AddComponent(BatchComponent? batchComponent)
+        public IReadOnlyList<ProductionStage> Stages => _stages.AsReadOnly();
+
+        public UnitResult<Error> AddComponent(BatchComponent? batchComponent)
         {
-            if(batchComponent == null)
+            if (_isDeleted)
             {
-                return Result.Failure("Такого компонента нет");
+                return Errors.Batch.IsDeleted();
+            }
+
+            if (batchComponent == null)
+            {
+                return Errors.General.ValueIsInvalid("BatchComponent");
             }
 
             _components.Add(batchComponent);
 
-            return Result.Success();
+            return Result.Success<Error>();
+        }
+
+        public UnitResult<Error> AddStage(ProductionStage? productionStage)
+        {
+            if (_isDeleted)
+            {
+                return Errors.Batch.IsDeleted();
+            }
+            
+            if(productionStage == null)
+            {
+                return Errors.General.ValueIsInvalid("ProductionStage");
+            }
+
+            _stages.Add(productionStage);
+
+            return Result.Success<Error>();
         }
 
         public Result ChangeComponentMass(BatchComponentId id, MassInGrams newMass)

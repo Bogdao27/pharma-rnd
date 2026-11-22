@@ -94,12 +94,12 @@ namespace PharmaRnd.Infrastructure.Migrations
                         });
 
                     b.HasKey("Id")
-                        .HasName("pk_batch_component");
+                        .HasName("pk_batch_components");
 
                     b.HasIndex("batch_id")
-                        .HasDatabaseName("ix_batch_component_batch_id");
+                        .HasDatabaseName("ix_batch_components_batch_id");
 
-                    b.ToTable("batch_component", (string)null);
+                    b.ToTable("batch_components", (string)null);
                 });
 
             modelBuilder.Entity("PharmaRnd.Domain.Product", b =>
@@ -151,6 +151,44 @@ namespace PharmaRnd.Infrastructure.Migrations
                     b.ToTable("products", (string)null);
                 });
 
+            modelBuilder.Entity("PharmaRnd.Domain.ProductionStage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<TimeOnly>("ExecutedAt")
+                        .HasColumnType("time without time zone")
+                        .HasColumnName("executed_at");
+
+                    b.Property<bool>("_isDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<Guid>("batch_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("batch_id");
+
+                    b.ComplexProperty(typeof(Dictionary<string, object>), "StageDescription", "PharmaRnd.Domain.ProductionStage.StageDescription#StageDescription", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(1000)
+                                .HasColumnType("character varying(1000)")
+                                .HasColumnName("stage_description");
+                        });
+
+                    b.HasKey("Id")
+                        .HasName("pk_production_stages");
+
+                    b.HasIndex("batch_id")
+                        .HasDatabaseName("ix_production_stages_batch_id");
+
+                    b.ToTable("production_stages", (string)null);
+                });
+
             modelBuilder.Entity("PharmaRnd.Domain.Batch", b =>
                 {
                     b.HasOne("PharmaRnd.Domain.Product", null)
@@ -168,12 +206,24 @@ namespace PharmaRnd.Infrastructure.Migrations
                         .HasForeignKey("batch_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_batch_component_batches_batch_id");
+                        .HasConstraintName("fk_batch_components_batches_batch_id");
+                });
+
+            modelBuilder.Entity("PharmaRnd.Domain.ProductionStage", b =>
+                {
+                    b.HasOne("PharmaRnd.Domain.Batch", null)
+                        .WithMany("Stages")
+                        .HasForeignKey("batch_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_production_stages_batches_batch_id");
                 });
 
             modelBuilder.Entity("PharmaRnd.Domain.Batch", b =>
                 {
                     b.Navigation("Components");
+
+                    b.Navigation("Stages");
                 });
 
             modelBuilder.Entity("PharmaRnd.Domain.Product", b =>

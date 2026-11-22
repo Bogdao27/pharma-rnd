@@ -31,17 +31,12 @@ namespace PharmaRnd.Infrastructure
 
             services.AddMinio(options =>
             {
-                services.Configure<MyMinioOptions>(configuration.GetSection(MyMinioOptions.MINIO));
-
-                services.AddMinio(options =>
-                {
-                    var minioOptions = configuration.GetSection(MyMinioOptions.MINIO).Get<MyMinioOptions>()
-                                       ?? throw new ApplicationException("Missing minio configuration");
-
-                    options.WithEndpoint(minioOptions.Endpoint);
-                    options.WithCredentials("minioadmin", "minioadmin");
-                    options.WithSSL(minioOptions.WithSSL);
-                });
+                var minioOptions = configuration.GetSection(MyMinioOptions.MINIO).Get<MyMinioOptions>()
+                                   ?? throw new ApplicationException("Missing minio configuration");
+                
+                options.WithEndpoint(minioOptions.Endpoint);
+                options.WithCredentials(minioOptions.AccessKey, minioOptions.SecretKey);
+                options.WithSSL(minioOptions.WithSSL);
             });
 
             return services;

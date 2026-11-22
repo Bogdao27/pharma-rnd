@@ -34,6 +34,12 @@ namespace PharmaRnd.Infrastructure.Configuration
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(b => b.Stages)
+                .WithOne()
+                .HasForeignKey("batch_id")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
             builder.Property<bool>("_isDeleted")
                 .UsePropertyAccessMode(PropertyAccessMode.Field)
                 .HasColumnName("is_deleted");
