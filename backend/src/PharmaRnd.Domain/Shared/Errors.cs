@@ -29,6 +29,11 @@
             {
                 return Error.Validation("record.already.exist", "Batch already exist");
             }
+
+            public static Error IsDeleted()
+            {
+                return Error.Conflict("record.is.deleted", "Batch is deleted");
+            }
         }
 
         public static class Product

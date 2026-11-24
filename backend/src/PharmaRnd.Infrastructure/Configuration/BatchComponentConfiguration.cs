@@ -8,7 +8,7 @@ namespace PharmaRnd.Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<BatchComponent> builder)
         {
-            builder.ToTable("batch_component");
+            builder.ToTable("batch_components");
 
             builder.HasKey(bc => bc.Id);
 
