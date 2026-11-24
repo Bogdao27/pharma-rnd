@@ -7,22 +7,18 @@ namespace PharmaRnd.Domain
     {
         private bool _isDeleted = false;
 
-        //для Ef Core
         private BatchComponent(BatchComponentId id) : base(id)
         {  
         }
 
-        //закрытый конструктор, присваивающий значения этим полям
         private BatchComponent(BatchComponentId id, MassInGrams mass, RawMaterialLotId lotId) : base(id)
         {
             Mass = mass;
             LotId = lotId;
         }
 
-        //свойство масса в виде VO
         public MassInGrams Mass { get; private set; } = default!;
 
-        //свойство айдишник в виде VO
         public RawMaterialLotId LotId { get; private set; } = default!;
 
         public static Result<BatchComponent, Error> Create(BatchComponentId id, MassInGrams mass, RawMaterialLotId lotId)

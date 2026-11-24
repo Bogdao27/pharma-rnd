@@ -7,7 +7,9 @@ namespace PharmaRnd.Application.Providers;
 
 public interface IFilesProvider
 {
-    Task<Result<string, Error>> UploadFile(FileData fileData, CancellationToken cancellationToken = default);
+    Task<UnitResult<Error>> UploadFile(
+        FileData fileData, 
+        CancellationToken cancellationToken = default);
     Task<UnitResult<Error>> DeleteFile(
         string bucketName,
         string objectName,

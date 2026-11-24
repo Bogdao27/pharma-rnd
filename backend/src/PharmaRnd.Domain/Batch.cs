@@ -3,13 +3,13 @@ using PharmaRnd.Domain.Shared;
 
 namespace PharmaRnd.Domain
 {
-    //корень агрегата
     public class Batch : MyEntity<BatchId>, ISoftDeletable
     {
         private bool _isDeleted = false;
 
         private readonly List<BatchComponent> _components = [];
         private readonly List<ProductionStage> _stages = [];
+        private readonly List<BatchFile> _files = [];
 
         //для ef core
         private Batch(BatchId id) : base(id)
@@ -20,11 +20,13 @@ namespace PharmaRnd.Domain
             (
             BatchId id,
             BatchNumber number,
-            DateOnly manufacturedOn
+            DateOnly manufacturedOn,
+            FilesList files
             ) : base(id)
         {
             Number = number;
             ManufacturedOn = manufacturedOn;
+            Files = files;
         }
 
         public BatchNumber Number { get; private set; } = default!;
@@ -32,8 +34,8 @@ namespace PharmaRnd.Domain
         public DateOnly ManufacturedOn { get; private set; } = default!;
         
         public IReadOnlyList<BatchComponent> Components => _components.AsReadOnly();
-
         public IReadOnlyList<ProductionStage> Stages => _stages.AsReadOnly();
+        public FilesList? Files { get; private set; }
 
         public UnitResult<Error> AddComponent(BatchComponent? batchComponent)
         {
