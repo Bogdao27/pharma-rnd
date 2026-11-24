@@ -1,6 +1,5 @@
 ﻿namespace PharmaRnd.Domain
 {
-    //идентификатор самой серии в системе
     public record BatchId
     {
         private BatchId(Guid value)
@@ -12,7 +11,6 @@
 
         public static BatchId NewBatchId() => new(Guid.NewGuid());
 
-        //для конфига бд
         public static BatchId Create(Guid id) => new(id);
 
         public static implicit operator Guid(BatchId batchId)
