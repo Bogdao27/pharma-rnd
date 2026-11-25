@@ -58,24 +58,20 @@ namespace PharmaRnd.Infrastructure.Repositories
             return product;
         }
 
-        public async Task<Guid> Save(
+        public Guid Save(
             Product product, 
             CancellationToken cancellationToken)
         {
             _dbContext.Products.Attach(product);
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
-
             return product.Id;
         }
 
-        public async Task<Guid> Delete(
+        public Guid Delete(
             Product product,
             CancellationToken cancellationToken)
         {
             _dbContext.Remove(product);
-
-            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return product.Id;
         }

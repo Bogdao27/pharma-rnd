@@ -1,5 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.Logging;
+using PharmaRnd.Application.Database;
 using PharmaRnd.Application.Validators;
 using PharmaRnd.Domain;
 using PharmaRnd.Domain.Shared;
@@ -9,10 +11,17 @@ namespace PharmaRnd.Application.Products.UpdateMainInfo
     public class UpdateMainInfoHandler
     {
         private readonly IProductsRepository _productsRepository;
+        private readonly ILogger<UpdateMainInfoHandler> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateMainInfoHandler(IProductsRepository productsRepository)
+        public UpdateMainInfoHandler(
+            IProductsRepository productsRepository,
+            ILogger<UpdateMainInfoHandler> logger,
+            IUnitOfWork unitOfWork)
         {
             _productsRepository = productsRepository;
+            _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<Guid, Error>> HandlerAsync(
@@ -32,9 +41,16 @@ namespace PharmaRnd.Application.Products.UpdateMainInfo
 
             productResult.Value.UpdateMainInfo(productName, description, dosageForm);
 
-            var result = await _productsRepository.Save(productResult.Value, cancellationToken);
+            await _unitOfWork.SaveChanges(cancellationToken);
 
-            return result;
+            _logger.LogInformation(
+                "Updated product {productName}, {description}, {dosageForm} with id {productId}",
+                productName,
+                description,
+                dosageForm,
+                request.ProductId);
+
+            return productResult.Value.Id.Value;
         }
     }
 }

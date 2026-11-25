@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using PharmaRnd.Domain.Shared;
+using PharmaRnd.Domain.Shared.ValueObjects;
 
 namespace PharmaRnd.Domain
 {
@@ -21,7 +22,7 @@ namespace PharmaRnd.Domain
             BatchId id,
             BatchNumber number,
             DateOnly manufacturedOn,
-            FilesList files
+            ValueObjectList<BatchFile> files
             ) : base(id)
         {
             Number = number;
@@ -35,7 +36,7 @@ namespace PharmaRnd.Domain
         
         public IReadOnlyList<BatchComponent> Components => _components.AsReadOnly();
         public IReadOnlyList<ProductionStage> Stages => _stages.AsReadOnly();
-        public FilesList? Files { get; private set; }
+        public ValueObjectList<BatchFile> Files { get; private set; }
 
         public UnitResult<Error> AddComponent(BatchComponent? batchComponent)
         {
@@ -81,6 +82,9 @@ namespace PharmaRnd.Domain
 
             return batchComponent.ChangeMass(newMass);
         }
+
+        public void UpdateFilesList(
+            ValueObjectList<BatchFile> files) => Files = files;
 
         public void Delete()
         {
