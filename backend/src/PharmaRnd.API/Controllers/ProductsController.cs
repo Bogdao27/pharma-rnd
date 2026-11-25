@@ -1,6 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using PharmaRnd.API.Contracts;
 using PharmaRnd.API.Extensions;
+using PharmaRnd.API.Processors;
+using PharmaRnd.Application.Products.AddBatch;
 using PharmaRnd.Application.Products.CreateProducts;
 using PharmaRnd.Application.Products.Delete;
 using PharmaRnd.Application.Products.UpdateMainInfo;
@@ -66,6 +69,32 @@ namespace PharmaRnd.API.Controllers
             }
 
             var result = await handler.HandlerAsync(request, cancellationToken);
+            if (result.IsFailure)
+            {
+                return result.Error.ToResponse();
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost("{id:guid}/batch")]
+        public async Task<ActionResult> AddBatch(
+            [FromRoute] Guid id,
+            [FromForm] AddBatchRequest request,
+            [FromServices] AddBatchHandler handler,
+            CancellationToken cancellationToken)
+        {
+            await using var fileProcessor = new FormFileProcessor();
+            
+            var fileDtos = fileProcessor.Process(request.Files);
+
+            var command = new AddBatchCommand(
+                id, 
+                request.Number, 
+                request.manufacturedOn,
+                fileDtos);
+
+            var result = await handler.HandlerAsync(command, cancellationToken);
             if (result.IsFailure)
             {
                 return result.Error.ToResponse();

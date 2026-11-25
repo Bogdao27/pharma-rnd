@@ -1,4 +1,4 @@
-namespace PharmaRnd.Application.FileProvider;
-public record FileData(IEnumerable<FileContent> Files, string BucketName);
+using PharmaRnd.Domain;
 
-public record FileContent(Stream Stream, string ObjectName);
+namespace PharmaRnd.Application.FileProvider;
+public record FileData(Stream Stream, FilePath FilePath, string BucketName);

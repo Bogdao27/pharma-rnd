@@ -1,14 +1,15 @@
 using System;
 using CSharpFunctionalExtensions;
 using PharmaRnd.Application.FileProvider;
+using PharmaRnd.Domain;
 using PharmaRnd.Domain.Shared;
 
 namespace PharmaRnd.Application.Providers;
 
 public interface IFilesProvider
 {
-    Task<UnitResult<Error>> UploadFile(
-        FileData fileData, 
+    Task<Result<IReadOnlyList<FilePath>, Error>> UploadFile(
+        IEnumerable<FileData> fileData, 
         CancellationToken cancellationToken = default);
     Task<UnitResult<Error>> DeleteFile(
         string bucketName,

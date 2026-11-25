@@ -15,10 +15,13 @@ public record FilePath
 
     public static Result<FilePath, Error> Create(Guid path, string extension)
     {
-        //некая валидация
-
         var fullPath = path.ToString() + "." + extension;
 
+        return new FilePath(fullPath);
+    }
+
+    public static Result<FilePath, Error> Create(string fullPath)
+    {
         return new FilePath(fullPath);
     }
 }

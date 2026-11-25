@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PharmaRnd.Domain;
+using PharmaRnd.Domain.Shared;
 
 namespace PharmaRnd.Infrastructure.Configuration
 {
@@ -39,6 +40,21 @@ namespace PharmaRnd.Infrastructure.Configuration
                 .HasForeignKey("batch_id")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.OwnsOne(b => b.Files, fb =>
+            {
+                fb.ToJson("files");
+
+                fb.OwnsMany(fi => fi.Values, fileBuilder =>
+                {
+                    fileBuilder.Property(fa => fa.PathToStorage)
+                        .HasConversion(
+                            p => p.Path, 
+                            value => FilePath.Create(value).Value)
+                        .IsRequired()
+                        .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+                });
+            });
 
             builder.Property<bool>("_isDeleted")
                 .UsePropertyAccessMode(PropertyAccessMode.Field)

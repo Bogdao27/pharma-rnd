@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using Microsoft.Extensions.Logging;
+using PharmaRnd.Application.Database;
 using PharmaRnd.Application.Products.UpdateMainInfo;
 using PharmaRnd.Domain;
 using PharmaRnd.Domain.Shared;
@@ -10,12 +12,19 @@ namespace PharmaRnd.Application.Products.Delete
 {
     public class DeleteProductHandler
     {
-        public DeleteProductHandler(IProductsRepository productsRepository)
+        public DeleteProductHandler(
+            IProductsRepository productsRepository,
+            ILogger<DeleteProductHandler> logger,
+            IUnitOfWork unitOfWork)
         {
             _productsRepository = productsRepository;
+            _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         private readonly IProductsRepository _productsRepository;
+        private readonly ILogger<DeleteProductHandler> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
         public async Task<Result<Guid, Error>> HandlerAsync(
             DeleteProductRequest request,
@@ -28,11 +37,15 @@ namespace PharmaRnd.Application.Products.Delete
                 return productResult.Error;
             }
 
-            var result = await _productsRepository.Delete(
-                productResult.Value, 
-                cancellationToken);
+            productResult.Value.Delete();
 
-            return result;
+            await _unitOfWork.SaveChanges();
+
+            _logger.LogInformation(
+                "Updated deleted with id {productId}", 
+                request.ProductId);
+
+            return productResult.Value.Id.Value;
         }
     }
 }

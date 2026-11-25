@@ -13,7 +13,7 @@ namespace PharmaRnd.Application.Products
         Task<Result<Product, Error>> GetByProductName(
             ProductName productName, 
             CancellationToken cancellationToken = default);
-        Task<Guid> Save(Product product, CancellationToken cancellationToken = default);
-        Task<Guid> Delete(Product product, CancellationToken cancellationToken = default);
+        Guid Save(Product product, CancellationToken cancellationToken = default);
+        Guid Delete(Product product, CancellationToken cancellationToken = default);
     }
 }

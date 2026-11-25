@@ -6,6 +6,6 @@ public record AddBatchCommand(
     Guid ProductId, 
     string Number, 
     DateOnly ManufacturedOn,
-    IEnumerable<FileDto> Files);
+    IEnumerable<CreateFileDto> Files);
 
-public record FileDto(Stream Content, string FileName, string ContentType);
+public record CreateFileDto(Stream Content, string FileName);
